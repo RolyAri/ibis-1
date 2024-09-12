@@ -26,8 +26,8 @@
     define('MAILPASSWORD','aK8izG1WEQwwB1X');
     define('MAILUSER','sistema_ibis@sepcon.net');
     define('CHARSET','UTF8');
-    define('USER','remoto');
-    define('PASSWORD','s3pc0n2020');
+    define('USER','root');
+    define('PASSWORD','hola123');
 
     define('id_sunat','d12d8bf5-4b57-4c57-9569-9072b3e1bfcd');
     define('clave_sunat','iLMGwQBEehJMXQ+Z/LR2KA==');

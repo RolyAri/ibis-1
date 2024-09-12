@@ -5,6 +5,55 @@
     $pagos = getPaymentList($pdo);
     $actividades = getEconomicActivity($pdo);
 
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        $ruc = $_POST['ruc'];
+        $razon_social = $_POST['razon_social'];
+        $direccion = $_POST['direccion'];
+        $correo_electronico = $_POST['correo_electronico'];
+        $pagina_web = $_POST['pagina_web'];
+        $telefono = $_POST['telefono'];
+        $pais = $_POST['pais'];
+        $forma_pago = $_POST['forma_pago'];
+        $actividad_economica = $_POST['actividad_economica'];
+        $gerente_comercial = $_POST['gerente_comercial'];
+        $documento_gerente = $_POST['documento_gerente'];
+        $telefono_gerente = $_POST['telefono_gerente'];
+        $correo_gerente = $_POST['correo_gerente'];
+        $contacto = $_POST['contacto'];
+        $documento_contacto = $_POST['documento_contacto'];
+        $telefono_contacto = $_POST['telefono_contacto'];
+        $correo_contacto = $_POST['correo_contacto'];
+        $cta_detracciones = $_POST['cta_detracciones'];
+        try{
+            $sql = "INSERT INTO cm_entidad SET cnumdoc=:ruc,crazonsoc=:razon_social,cviadireccion=:direccion,cemail=:correo_electronico,ctelefono=:telefono,ncodpais=:pais"
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':ruc' => $ruc,
+                ':razon_social' => $razon_social,
+                ':direccion' => $direccion,
+                ':correo_electronico' => $correo_electronico,
+                ':pagina_web' => $pagina_web,
+                ':telefono' => $telefono,
+                ':pais' => $pais,
+                ':forma_pago' => $forma_pago,
+                ':actividad_economica' => $actividad_economica,
+                ':gerente_comercial' => $gerente_comercial,
+                ':documento_gerente' => $documento_gerente,
+                ':telefono_gerente' => $telefono_gerente,
+                ':correo_gerente' => $correo_gerente,
+                ':contacto' => $contacto,
+                ':documento_contacto' => $documento_contacto,
+                ':telefono_contacto' => $telefono_contacto,
+                ':correo_contacto' => $correo_contacto,
+                ':cta_detracciones' => $cta_detracciones
+            ]);
+
+            echo "Los datos se han guardado correctamente.";
+        }catch(PDOException $e) {
+            echo "Error al guardar los datos: " . $e->getMessage();
+        }
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,14 +70,15 @@
         </dialog>
     </div>
     <div class="wrap">
-        <form id="datos_entidad">
+        <form id="datos_entidad" method="POST" action="alta.php">
             <input type="file" class="oculto" name="uploadruc" id="uploadruc">
             <input type="file" class="oculto" name="uploadcatalogo" id="uploadcatalogo">
 
             <section class="wrap__header">
                 <img src="../img/logo.png" alt="logo_sepcon">
                 <span>FORMULARIO DE REGISTRO DE PROVEEDORES</span>
-                <a href="#" class="btn btn-1" id="btn_guardar">Grabar Datos</a>
+                <!-- <a href="#" class="btn btn-1" id="btn_guardar">Grabar Datos</a> -->
+                <button type="submit" class="btn btn-1" id="btn_guardar">Grabar Datos</button>
             </section>
             <section class="seccion_pagina">
                 <div class="contenedor_detalles">

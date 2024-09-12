@@ -1,8 +1,8 @@
 <?php 
 	//$dsn = "mysql:dbname=ibis;host=192.168.1.30";
 	$dsn = "mysql:dbname=ibis;host=localhost";
-	$user = "remoto";
-	$password = "s3pc0n2020";
+	$user = "root";
+	$password = "";
 	$errorDbConexion = true;
 
 	try {
