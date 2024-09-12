@@ -3234,7 +3234,7 @@
                                                         SET nflgactivo = NULL,
                                                             id_regmov = NULL,
                                                             nEstadoReg = 105,
-                                                            cant_orden = 0
+                                                            ncanti = 0
                                                         WHERE nitemord =:id");
                 $sql->execute(["id" => $io]);
             } catch (PDOException $th) {

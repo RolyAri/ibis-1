@@ -9,9 +9,9 @@
             $this->view->listaCostos = $this->model->costosPorUsuario($_SESSION['iduser']);
             $this->view->listaCostosSelect = $this->model->costosPorUsuarioSelect($_SESSION['iduser']);
             $this->view->listaAreas = $this->model->obtenerAreas();
-            $this->view->listaTipos = $this->model->listarParametros("07");
+            $this->view->listaTiposTransferencia = $this->model->listarParametros("25");
             $this->view->listaTransportes = $this->model->listarParametros("08");
-            $this->view->listaAutorizaciones = $this->model->listarParametros("25");
+            $this->view->listaTipos = $this->model->listarParametros("26");
             $this->view->listaAquarius  = $this->model->listarAquarius();
             $this->view->listaTraslados = $this->model->listarTraslados();
             $this->view->listaAlmacen = $this->model->listarAlmacenSepcon();
@@ -74,6 +74,10 @@
 
         function status(){
             echo json_encode($this->model->obtenerEstado($_POST['id']));
+        }
+
+        function equipos(){
+            echo $this->model->llamarEquipos($_POST['codigo'],$_POST['descripcion']);
         }
         
     }

@@ -72,6 +72,7 @@
                 $sql=$this->db->connect()->prepare("INSERT INTO alm_autorizacab 
                                                     SET alm_autorizacab.femision=:emision,
                                                         alm_autorizacab.ncostos=:costos,
+                                                        alm_autorizacab.ncostosd=:costosd,
                                                         alm_autorizacab.narea=:area,
                                                         alm_autorizacab.csolicita=:solicita,
                                                         alm_autorizacab.norigen=:origen,
@@ -82,7 +83,8 @@
                                                         alm_autorizacab.cautoriza=:autoriza");
 
                 $sql->execute(["emision"=>$cabecera['emitido'],
-                                "costos"=>$cabecera['codigo_costos'],
+                                "costos"=>$cabecera['codigo_costos_origen'],
+                                "costos"=>$cabecera['codigo_costos_destino'],
                                 "area"=>$cabecera['codigo_area'],
                                 "solicita"=>$cabecera['codigo_usuario'],
                                 "origen"=>$cabecera['codigo_origen'],
@@ -523,6 +525,45 @@
                     }
 
                 return $docData;
+
+            } catch (PDOException $th) {
+                echo "Error: ".$th->getMessage();
+                return false;
+            }
+        }
+
+        public function llamarEquipos($codigo,$equipo){
+            try {
+                $salida = "";
+
+                $cod = $codigo == "-1" ? "%" : "%".$codigo."%";
+                $equ = $equipo == "-1" ? "%" : "%".$equipo."%";
+
+                $sql =  $this->db->connect()->prepare("SELECT
+                                    tb_equipmtto.idreg,
+                                    tb_equipmtto.cregistro,
+                                    tb_equipmtto.cdescripcion 
+                                FROM
+                                    tb_equipmtto 
+                                WHERE
+                                    tb_equipmtto.nflgactivo = 1
+                                    AND tb_equipmtto.cregistro LIKE :codigo
+                                    AND tb_equipmtto.cdescripcion LIKE :equipo");
+
+                $sql->execute(["codigo"=>$cod,"equipo"=>$equ]);
+
+                $rowCount = $sql->rowCount();
+                if ($rowCount > 0){
+                    while ($rs = $sql->fetch()) {
+                        $salida .='<tr class="pointer" data-idprod="'.$rs['idreg'].'" data-ncomed="UND" data-unidad="UND">
+                                        <td class="textoCentro">'.$rs['cregistro'].'</td>
+                                        <td class="pl20px">'.$rs['cdescripcion'].'</td>
+                                        <td class="textoCentro">UND</td>
+                                    </tr>';
+                    }
+                }
+
+                return $salida;
 
             } catch (PDOException $th) {
                 echo "Error: ".$th->getMessage();

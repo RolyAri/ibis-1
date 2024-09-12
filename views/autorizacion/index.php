@@ -16,9 +16,11 @@
         <div class="ventanaProceso tamanioProceso">
             <div class="cabezaProceso">
                 <form action="#" id="formProceso" autocomplete="off">
-                    <input type="hidden" name="codigo_costos" id="codigo_costos"> 
+                    <input type="hidden" name="codigo_costos_origen" id="codigo_costos_origen">
+                    <input type="hidden" name="codigo_costos_destino" id="codigo_costos_destino"> 
                     <input type="hidden" name="codigo_area" id="codigo_area">
                     <input type="hidden" name="codigo_tipo" id="codigo_tipo">
+                    <input type="hidden" name="codigo_tipo_transferencia" id="codigo_tipo_transferencia">
                     <input type="hidden" name="codigo_solicitante" id="codigo_solicitante">
                     <input type="hidden" name="codigo_origen" id="codigo_origen">
                     <input type="hidden" name="codigo_destino" id="codigo_destino">
@@ -61,9 +63,18 @@
                                 </div>
                             </div>
                             <div class="column2">
-                                <label for="costos">CCostos:</label>
+                                <label for="costos">CCostos Origen:</label>
                                 <input type="text" name="costos" id="costos" class="mostrarLista busqueda" placeholder="Elija una opcion">
-                                <div class="lista" id="listaCostos">
+                                <div class="lista" id="listaCostosOrigen">
+                                   <ul>
+                                       <?php echo $this->listaCostos?>
+                                   </ul> 
+                                </div>
+                            </div>
+                            <div class="column2">
+                                <label for="costos">CCostos Destino:</label>
+                                <input type="text" name="costosdestino" id="costosdestino" class="mostrarLista busqueda" placeholder="Elija una opcion">
+                                <div class="lista" id="listaCostosDestino">
                                    <ul>
                                        <?php echo $this->listaCostos?>
                                    </ul> 
@@ -80,12 +91,9 @@
                             </div>
                         </div>
                         <div class="seccion_medio">
+                           
                             <div class="column2">
-                                <label for="solicitante">Solicitante:</label>
-                                <input type="text" name="solicitante" id="solicitante">
-                            </div>
-                            <div class="column2">
-                                    <label for="origen">Origen:</label>
+                                    <label for="origen">Almacen Origen:</label>
                                     <input type="text" name="origen" id="origen" class="mostrarLista busqueda" placeholder="Elija una opcion">
                                     <div class="lista" id="listaOrigen">
                                         <ul>
@@ -94,26 +102,17 @@
                                    </div>
                             </div>
                             <div class="column2">
-                                    <label for="destino">Destino:</label>
-                                    <input type="text" name="destino" id="destino" class="mostrarLista busqueda" placeholder="Elija una opcion">
-                                    <div class="lista" id="listaDestino">
-                                        <ul>
-                                            <?php echo $this->listaAlmacen?>
-                                        </ul>
-                                   </div>
-                            </div>
-                        </div>
-                        <div class="seccion_derecha">
-                            <div class="column4_55">
-                                <div class="column2_3457">
-                                    <label for="tipo">Transferencia:</label>
-                                    <input type="text" name="tipo" id="tipo" class="mostrarLista busqueda" placeholder="Elija una opcion">
-                                    <div class="lista" id="listaTipos">
+                                <label for="destino">Almacen Destino:</label>
+                                <input type="text" name="destino" id="destino" class="mostrarLista busqueda" placeholder="Elija una opcion">
+                                <div class="lista" id="listaDestino">
                                     <ul>
-                                       <?php echo $this->listaAutorizaciones?>
+                                        <?php echo $this->listaAlmacen?>
                                     </ul>
                                 </div>
-                                </div>
+                            </div>
+                            <div class="column2">
+                                <label for="solicitante">Solicitante:</label>
+                                <input type="text" name="solicitante" id="solicitante">
                             </div>
                             <div class="column2">
                                 <label for="autoriza">Autoriza:</label>
@@ -122,6 +121,30 @@
                                    <ul>
                                         <?php echo $this->listaPersonal?>
                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seccion_derecha">
+                            <div class="column4_55">
+                                <div class="column2_3457">
+                                    <label for="tipo">Transferencia:</label>
+                                    <input type="text" name="tipo" id="tipo" class="mostrarLista busqueda" placeholder="Elija una opcion">
+                                    <div class="lista" id="listaTiposTransferencia">
+                                        <ul>
+                                        <?php echo $this->listaTiposTransferencia?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column4_55">
+                                <div class="column2_3457">
+                                    <label for="tipo">Tipo:</label>
+                                    <input type="text" name="tipo" id="tipo" class="mostrarLista busqueda" placeholder="Elija una opcion">
+                                    <div class="lista" id="listaTipos">
+                                        <ul>
+                                        <?php echo $this->listaTipos?>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <div class="column2">

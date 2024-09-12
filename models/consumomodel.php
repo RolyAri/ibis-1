@@ -474,37 +474,39 @@
             require_once('public/PHPExcel/PHPExcel.php');
             try {
                 $sql = $this->db->connect()->prepare("SELECT
-                                                        ibis.alm_consumo.nrodoc,
-                                                        ibis.alm_consumo.cserie,
-                                                        FORMAT(ibis.alm_consumo.cantsalida,2) AS cantsalida,
-                                                        FORMAT(ibis.alm_consumo.cantdevolucion,2) AS cantdevolucion,
-                                                        DATE_FORMAT(ibis.alm_consumo.fechasalida,'%d/%m/%Y') AS fechasalida,
-                                                        DATE_FORMAT(ibis.alm_consumo.fechadevolucion,'%d/%m/%Y') AS fechadevolucion,
-                                                        FORMAT(ibis.alm_consumo.nhoja,2) AS nhoja,
-                                                        ibis.alm_consumo.cisometrico,
-                                                        ibis.alm_consumo.cobserentrega,
-                                                        ibis.alm_consumo.cobserdevuelto,
-                                                        ibis.alm_consumo.cestado,
-                                                        UPPER( ibis.cm_producto.ccodprod ) AS codigo,
-                                                        UPPER( ibis.cm_producto.cdesprod ) AS descripcion,
-                                                        ibis.tb_grupo.cdescrip AS grupo,
-                                                        ibis.tb_clase.cdescrip AS clase,
-                                                        ibis.tb_familia.cdescrip AS familia,
-                                                        CONCAT_WS( ' ', rrhh.tabla_aquarius.apellidos, rrhh.tabla_aquarius.nombres ) AS nombres,
-                                                        UPPER( rrhh.tabla_aquarius.dcargo ) AS cargo,
-                                                        ibis.tb_user.cnombres  
-                                                    FROM
-                                                        ibis.alm_consumo
-                                                        LEFT JOIN ibis.cm_producto ON alm_consumo.idprod = cm_producto.id_cprod
-                                                        LEFT JOIN ibis.tb_grupo ON cm_producto.ngrupo = tb_grupo.ncodgrupo
-                                                        LEFT JOIN ibis.tb_clase ON cm_producto.nclase = tb_clase.ncodclase
-                                                        LEFT JOIN ibis.tb_familia ON cm_producto.nfam = tb_familia.ncodfamilia
-                                                        LEFT JOIN rrhh.tabla_aquarius ON ibis.alm_consumo.nrodoc = rrhh.tabla_aquarius.dni 
-                                                        LEFT JOIN ibis.tb_user ON ibis.alm_consumo.reguser = ibis.tb_user.iduser 
-                                                    WHERE
-                                                        alm_consumo.flgactivo = 1
-                                                        AND alm_consumo.ncostos =:cc
-                                                    ORDER BY ibis.alm_consumo.fechasalida ASC");
+                                                                ibis.alm_consumo.nrodoc,
+                                                                ibis.alm_consumo.cserie,
+                                                                FORMAT( ibis.alm_consumo.cantsalida, 2 ) AS cantsalida,
+                                                                FORMAT( ibis.alm_consumo.cantdevolucion, 2 ) AS cantdevolucion,
+                                                                DATE_FORMAT( ibis.alm_consumo.fechasalida, '%d/%m/%Y' ) AS fechasalida,
+                                                                DATE_FORMAT( ibis.alm_consumo.fechadevolucion, '%d/%m/%Y' ) AS fechadevolucion,
+                                                                FORMAT( ibis.alm_consumo.nhoja, 2 ) AS nhoja,
+                                                                ibis.alm_consumo.cisometrico,
+                                                                ibis.alm_consumo.cobserentrega,
+                                                                ibis.alm_consumo.cobserdevuelto,
+                                                                ibis.alm_consumo.cestado,
+                                                                UPPER( ibis.cm_producto.ccodprod ) AS codigo,
+                                                                UPPER( ibis.cm_producto.cdesprod ) AS descripcion,
+                                                                ibis.tb_grupo.cdescrip AS grupo,
+                                                                ibis.tb_clase.cdescrip AS clase,
+                                                                ibis.tb_familia.cdescrip AS familia,
+                                                                CONCAT_WS( ' ', aquarius.apellidos, aquarius.nombres ) AS nombres,
+                                                                UPPER(aquarius.dcargo ) AS cargo,
+                                                                ibis.tb_user.cnombres 
+                                                            FROM
+                                                                ibis.alm_consumo
+                                                                LEFT JOIN ibis.cm_producto ON alm_consumo.idprod = cm_producto.id_cprod
+                                                                LEFT JOIN ibis.tb_grupo ON cm_producto.ngrupo = tb_grupo.ncodgrupo
+                                                                LEFT JOIN ibis.tb_clase ON cm_producto.nclase = tb_clase.ncodclase
+                                                                LEFT JOIN ibis.tb_familia ON cm_producto.nfam = tb_familia.ncodfamilia
+                                                                LEFT JOIN (SELECT rrhh.tabla_aquarius.apellidos, rrhh.tabla_aquarius.nombres, rrhh.tabla_aquarius.dni,
+                                                            rrhh.tabla_aquarius.dcargo	FROM rrhh.tabla_aquarius GROUP BY rrhh.tabla_aquarius.dni) AS aquarius ON ibis.alm_consumo.nrodoc = aquarius.dni
+                                                                LEFT JOIN ibis.tb_user ON ibis.alm_consumo.reguser = ibis.tb_user.iduser 
+                                                            WHERE
+                                                                alm_consumo.flgactivo = 1 
+                                                                AND alm_consumo.ncostos =:cc
+                                                            ORDER BY
+                                                                ibis.alm_consumo.fechasalida ASC");
                 $sql->execute(["cc"=>$cc]);
                 $rowCount = $sql->rowCount();
 
@@ -602,7 +604,6 @@
                         $objPHPExcel->getActiveSheet()->setCellValue('H'.$fila,$rs['cantsalida']);
                         $objPHPExcel->getActiveSheet()->setCellValue('I'.$fila,$rs['fechadevolucion']);
                         
-
                         $objPHPExcel->getActiveSheet()->setCellValue('J'.$fila,$rs['cantdevolucion']);
                         $objPHPExcel->getActiveSheet()->setCellValue('K'.$fila,$rs['nhoja']);
                         $objPHPExcel->getActiveSheet()->setCellValue('L'.$fila,$rs['cisometrico']);

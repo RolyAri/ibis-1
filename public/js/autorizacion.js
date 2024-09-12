@@ -248,14 +248,16 @@ $(function(){
         destino.val($(this).text());
         id = destino.attr("id");
 
-        if(contenedor_padre == "listaCostos"){
-            $("#codigo_costos").val(codigo);
+        if(contenedor_padre == "listaCostosOrigen"){
+            $("#codigo_costos_origen").val(codigo);
+        }else if(contenedor_padre == "listaCostosDestino") {
+            $("#codigo_costos_destino").val(codigo);
         }else if(contenedor_padre == "listaAreas"){
             $("#codigo_area").val(codigo);
         }else if(contenedor_padre == "listaSolicitantes"){
             $("#codigo_solicitante").val(codigo);
-        }else if(contenedor_padre == "listaTipo"){
-            $("#codigo_tipo").val(codigo);
+        }else if(contenedor_padre == "listaTiposTransferencia"){
+            $("#codigo_tipo_transferencia").val(codigo);
         }else if(contenedor_padre == "listaOrigen"){
             $("#codigo_origen").val(codigo);
         }else if(contenedor_padre == "listaDestino"){
@@ -342,9 +344,10 @@ $(function(){
         if(e.which == 13) {
             $("#esperar").fadeIn();
             
-            $.post(RUTA+"pedidos/filtraItems", {codigo:$("#txtBuscarCodigo").val(),
-                                                descripcion:$("#txtBuscarDescrip").val(),
-                                                tipo:37},
+            if ( $("#codigo_tipo").val() === "277" ){
+                $.post(RUTA+"pedidos/filtraItems", {codigo:$("#txtBuscarCodigo").val(),
+                                            descripcion:$("#txtBuscarDescrip").val(),
+                                            tipo:37},
                     function (data, textStatus, jqXHR) {
                         $("#tablaModulos tbody")
                             .empty()
@@ -353,6 +356,20 @@ $(function(){
                     },
                     "text"
                 );
+            }
+            else {
+                $.post(RUTA+"autorizacion/equipos", {codigo:$("#txtBuscarCodigo").val(),
+                                                    descripcion:$("#txtBuscarDescrip").val()},
+                    function (data, textStatus, jqXHR) {
+                        $("#tablaModulos tbody")
+                            .empty()
+                            .append(data);
+                        $("#esperar").fadeOut();
+                    },
+                    "text"
+                );
+            }
+            
         }
     });
 
@@ -398,16 +415,29 @@ $(function(){
         if ( $("#codigo_tipo").val() === ""){
             mostrarMensaje("Selecione el tipo de movimiento","mensaje_error");
         }else{
-            $.post(RUTA+"pedidos/llamaProductos", {tipo:37},
-                function (data, textStatus, jqXHR) {
-                    $("#tablaModulos tbody")
-                        .empty()
-                        .append(data);
+            if ( $("#codigo_tipo").val() === "277")
+                $.post(RUTA+"pedidos/llamaProductos", {tipo:37},
+                    function (data, textStatus, jqXHR) {
+                        $("#tablaModulos tbody")
+                            .empty()
+                            .append(data);
 
-                    $("#busqueda").fadeIn();
-                },
-                "text"
-            );
+                        $("#busqueda").fadeIn();
+                    },
+                    "text"
+                );
+            else {
+                $.post(RUTA+"autorizacion/equipos", {codigo:"-1",descripcion:"-1"},
+                    function (data, textStatus, jqXHR) {
+                        $("#tablaModulos tbody")
+                            .empty()
+                            .append(data);
+
+                        $("#busqueda").fadeIn();
+                    },
+                    "text"
+                );
+            }
         }
 
         return false;

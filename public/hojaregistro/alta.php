@@ -64,11 +64,11 @@
     <link rel="stylesheet" href="../css/hojaregistro.css?<?php echo $version = rand(0, 9999); ?>">
 </head>
 <body>
-    <div class="modal">
+    <!--<div class="modal">
         <dialog open>
             <p>Esto es un ejemplo de mensaje de diálogo.</p>
         </dialog>
-    </div>
+    </div>-->
     <div class="wrap">
         <form id="datos_entidad" method="POST" action="alta.php">
             <input type="file" class="oculto" name="uploadruc" id="uploadruc">
